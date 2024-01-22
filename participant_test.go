@@ -35,7 +35,6 @@ import (
 	"github.com/uber-go/go-helix/util"
 	uzk "github.com/uber-go/go-helix/zk"
 	"github.com/uber-go/tally"
-	"go.uber.org/zap"
 )
 
 type ParticipantTestSuite struct {
@@ -67,13 +66,13 @@ func (s *ParticipantTestSuite) TestConnectAndDisconnect() {
 
 func (s *ParticipantTestSuite) TestParticipantNameCollision() {
 	port := GetRandomPort()
-	p1, _ := NewParticipant(zap.NewNop(), tally.NoopScope,
+	p1, _ := NewParticipant(util.NopLogger(), tally.NoopScope,
 		s.ZkConnectString, testApplication, TestClusterName, TestResource, testParticipantHost, port)
 	s.NotNil(p1)
 	p1.RegisterStateModel(StateModelNameOnlineOffline, createNoopStateModelProcessor())
 	err := p1.Connect()
 	s.NoError(err)
-	p2, _ := NewParticipant(zap.NewNop(), tally.NoopScope,
+	p2, _ := NewParticipant(util.NopLogger(), tally.NoopScope,
 		s.ZkConnectString, testApplication, TestClusterName, TestResource, testParticipantHost, port)
 	s.NotNil(p2)
 	p2.RegisterStateModel(StateModelNameOnlineOffline, createNoopStateModelProcessor())
@@ -307,7 +306,7 @@ func (s *ParticipantTestSuite) TestProcessMessages() {
 			counters[StateModelStateOffline][StateModelStateDropped]++
 			return nil
 		})
-	p, _ := NewParticipant(zap.NewNop(), tally.NoopScope,
+	p, _ := NewParticipant(util.NopLogger(), tally.NoopScope,
 		s.ZkConnectString, testApplication, TestClusterName, TestResource, testParticipantHost, port)
 	pImpl := p.(*participant)
 	s.NotNil(pImpl)
@@ -445,13 +444,13 @@ func (s *ParticipantTestSuite) TestMismatchStateIsRejected() {
 
 func (s *ParticipantTestSuite) TestHandleNewSessionCalledAfterZookeeperSessionExpired() {
 	port := GetRandomPort()
-	p, _ := NewParticipant(zap.NewNop(), tally.NoopScope,
+	p, _ := NewParticipant(util.NopLogger(), tally.NoopScope,
 		s.ZkConnectString, testApplication, TestClusterName, TestResource, testParticipantHost, port)
 	pImpl := p.(*participant)
 	defer pImpl.Disconnect()
 	// set default state to StateHasSession so Participant would believe it is connected
 	fakeZK := uzk.NewFakeZk(uzk.DefaultConnectionState(zk.StateHasSession))
-	pImpl.zkClient = uzk.NewClient(zap.NewNop(), tally.NoopScope, uzk.WithConnFactory(fakeZK),
+	pImpl.zkClient = uzk.NewClient(util.NopLogger(), tally.NoopScope, uzk.WithConnFactory(fakeZK),
 		uzk.WithRetryTimeout(time.Second))
 	pImpl.Connect()
 	s.Len(fakeZK.GetConnections(), 1)
@@ -476,7 +475,7 @@ func (s *ParticipantTestSuite) TestHandleNewSessionCalledAfterZookeeperSessionEx
 
 func (s *ParticipantTestSuite) TestFatalErrorCh() {
 	port := GetRandomPort()
-	p, errCh := NewTestParticipant(zap.NewNop(), tally.NoopScope,
+	p, errCh := NewTestParticipant(util.NopLogger(), tally.NoopScope,
 		s.ZkConnectString, testApplication, TestClusterName, TestResource, testParticipantHost, port)
 	s.True(errCh == p.GetFatalErrorChan())
 }

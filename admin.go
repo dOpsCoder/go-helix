@@ -28,9 +28,9 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/uber-go/go-helix/model"
+	"github.com/uber-go/go-helix/util"
 	"github.com/uber-go/go-helix/zk"
 	"github.com/uber-go/tally"
-	"go.uber.org/zap"
 )
 
 var (
@@ -356,7 +356,7 @@ type Admin struct {
 // NewAdmin instantiates Admin
 func NewAdmin(zkConnectString string) (*Admin, error) {
 	zkClient := zk.NewClient(
-		zap.NewNop(), tally.NoopScope, zk.WithZkSvr(zkConnectString), zk.WithSessionTimeout(zk.DefaultSessionTimeout))
+		util.NopLogger(), tally.NoopScope, zk.WithZkSvr(zkConnectString), zk.WithSessionTimeout(zk.DefaultSessionTimeout))
 	err := zkClient.Connect()
 	if err != nil {
 		return nil, err
@@ -508,7 +508,7 @@ func (adm Admin) DropCluster(cluster string) error {
 // ./helix-admin.sh --zkSvr <ZookeeperServerAddress> --addNode <clusterName instanceId>
 // node is in the form of host_port
 func (adm Admin) AddNode(cluster string, node string) error {
-	if ok, err := adm.isClusterSetup(cluster); ok == false || err != nil {
+	if ok, err := adm.isClusterSetup(cluster); !ok || err != nil {
 		return ErrClusterNotSetup
 	}
 

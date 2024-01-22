@@ -129,10 +129,10 @@ func (b *KeyBuilder) errorsR(participantID string) string {
 	return fmt.Sprintf("/%s/INSTANCES/%s/ERRORS", b.clusterName, participantID)
 }
 
-func (b *KeyBuilder) errors(participantID string, sessionID string, resourceID string) string {
-	return fmt.Sprintf(
-		"/%s/INSTANCES/%s/ERRORS/%s/%s", b.clusterName, participantID, sessionID, resourceID)
-}
+// func (b *KeyBuilder) errors(participantID string, sessionID string, resourceID string) string {
+// 	return fmt.Sprintf(
+// 		"/%s/INSTANCES/%s/ERRORS/%s/%s", b.clusterName, participantID, sessionID, resourceID)
+// }
 
 func (b *KeyBuilder) healthReport(participantID string) string {
 	return fmt.Sprintf("/%s/INSTANCES/%s/HEALTHREPORT", b.clusterName, participantID)

@@ -32,8 +32,8 @@ import (
 	"github.com/samuel/go-zookeeper/zk"
 	"github.com/stretchr/testify/suite"
 	"github.com/uber-go/go-helix/model"
+	"github.com/uber-go/go-helix/util"
 	"github.com/uber-go/tally"
-	"go.uber.org/zap"
 )
 
 type ZKClientTestSuite struct {
@@ -65,7 +65,7 @@ func TestZKClientTestSuite(t *testing.T) {
 }
 
 func (s *ZKClientTestSuite) SetupTest() {
-	s.zkClient = NewClient(zap.NewNop(), tally.NoopScope, WithZkSvr(s.ZkConnectString),
+	s.zkClient = NewClient(util.NopLogger(), tally.NoopScope, WithZkSvr(s.ZkConnectString),
 		WithSessionTimeout(DefaultSessionTimeout))
 }
 
@@ -153,7 +153,7 @@ func (s *ZKClientTestSuite) TestHelixRecordOps() {
 	state := "ONLINE"
 	key := fmt.Sprintf("%d", rand.Int())
 	value := fmt.Sprintf("%d", rand.Int())
-	c := NewClient(zap.NewNop(), tally.NoopScope, WithZkSvr(s.ZkConnectString),
+	c := NewClient(util.NopLogger(), tally.NoopScope, WithZkSvr(s.ZkConnectString),
 		WithSessionTimeout(DefaultSessionTimeout))
 	err := c.Connect()
 	s.NoError(err)
@@ -179,7 +179,7 @@ func (s *ZKClientTestSuite) TestHelixRecordOps() {
 }
 
 func (s *ZKClientTestSuite) TestWatcher() {
-	c := NewClient(zap.NewNop(), tally.NoopScope, WithZkSvr(s.ZkConnectString),
+	c := NewClient(util.NopLogger(), tally.NoopScope, WithZkSvr(s.ZkConnectString),
 		WithSessionTimeout(DefaultSessionTimeout))
 	watcher := &CountEventWatcher{}
 	c.AddWatcher(watcher)
@@ -272,7 +272,7 @@ func (s *ZKClientTestSuite) TestZkSizeLimit() {
 }
 
 func (s *ZKClientTestSuite) createClientWithFakeConn(z *FakeZk) *Client {
-	return NewClient(zap.NewNop(), tally.NoopScope, WithConnFactory(z), WithRetryTimeout(time.Second))
+	return NewClient(util.NopLogger(), tally.NoopScope, WithConnFactory(z), WithRetryTimeout(time.Second))
 }
 
 func (s ZKClientTestSuite) createRandomPath() string {

@@ -32,8 +32,8 @@ import (
 
 	"github.com/samuel/go-zookeeper/zk"
 	"github.com/stretchr/testify/suite"
+	"github.com/uber-go/go-helix/util"
 	"github.com/uber-go/tally"
-	"go.uber.org/zap"
 )
 
 // EmbeddedZkServer is the connect string for embedded ZK server
@@ -63,7 +63,7 @@ func (s *BaseZkTestSuite) SetupSuite() {
 // CreateAndConnectClient creates ZK client and connects to ZK server
 func (s *BaseZkTestSuite) CreateAndConnectClient() *Client {
 	zkClient := NewClient(
-		zap.NewNop(), tally.NoopScope, WithZkSvr(s.ZkConnectString), WithSessionTimeout(time.Second))
+		util.NopLogger(), tally.NoopScope, WithZkSvr(s.ZkConnectString), WithSessionTimeout(time.Second))
 	err := zkClient.Connect()
 	s.NoError(err)
 	return zkClient

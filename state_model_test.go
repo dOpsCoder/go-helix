@@ -42,11 +42,11 @@ func TestStateModelTestSuite(t *testing.T) {
 
 func (s *StateModelTestSuite) TestUpdateAndGetState() {
 	stateModel := NewStateModel()
-	result, exist := stateModel.GetState(_testResource, _testPartition)
+	_, exist := stateModel.GetState(_testResource, _testPartition)
 	s.False(exist)
 
 	stateModel.UpdateState(_testResource, _testPartition, StateModelStateOffline)
-	result, exist = stateModel.GetState(_testResource, _testPartition)
+	result, exist := stateModel.GetState(_testResource, _testPartition)
 	s.True(exist)
 	s.Equal(result, StateModelStateOffline)
 
@@ -58,11 +58,11 @@ func (s *StateModelTestSuite) TestUpdateAndGetState() {
 
 func (s *StateModelTestSuite) TestRemoveState() {
 	stateModel := NewStateModel()
-	result, exist := stateModel.GetState(_testResource, _testPartition)
+	_, exist := stateModel.GetState(_testResource, _testPartition)
 	s.False(exist)
 
 	stateModel.UpdateState(_testResource, _testPartition, StateModelStateOffline)
-	result, exist = stateModel.GetState(_testResource, _testPartition)
+	result, exist := stateModel.GetState(_testResource, _testPartition)
 	s.True(exist)
 	s.Equal(result, StateModelStateOffline)
 

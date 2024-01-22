@@ -21,8 +21,9 @@
 package helix
 
 import (
+	"log/slog"
+
 	"github.com/uber-go/tally"
-	"go.uber.org/zap"
 )
 
 // TestParticipant is a participant used for test purpose
@@ -32,7 +33,7 @@ type TestParticipant struct {
 
 // NewTestParticipant returns a TestParticipant
 func NewTestParticipant(
-	logger *zap.Logger,
+	logger *slog.Logger,
 	scope tally.Scope,
 	zkConnectString string,
 	application string,

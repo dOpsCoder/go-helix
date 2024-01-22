@@ -26,9 +26,9 @@ import (
 	"math/rand"
 
 	"github.com/uber-go/go-helix/model"
+	"github.com/uber-go/go-helix/util"
 	"github.com/uber-go/go-helix/zk"
 	"github.com/uber-go/tally"
-	"go.uber.org/zap"
 )
 
 const (
@@ -90,7 +90,7 @@ func (s *BaseHelixTestSuite) ensureHelixClusterUp() {
 
 func (s *BaseHelixTestSuite) createParticipantAndConnect() (*participant, <-chan error) {
 	port := GetRandomPort()
-	p, errChan := NewParticipant(zap.NewNop(), tally.NoopScope,
+	p, errChan := NewParticipant(util.NopLogger(), tally.NoopScope,
 		s.ZkConnectString, testApplication, TestClusterName, TestResource, testParticipantHost, port)
 	pImpl := p.(*participant)
 	s.NotNil(p)

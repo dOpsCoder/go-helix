@@ -21,6 +21,7 @@
 package zk
 
 import (
+	"log/slog"
 	"path"
 	"strconv"
 	"strings"
@@ -31,7 +32,6 @@ import (
 	"github.com/samuel/go-zookeeper/zk"
 	"github.com/uber-go/go-helix/model"
 	"github.com/uber-go/tally"
-	"go.uber.org/zap"
 )
 
 const (
@@ -102,7 +102,7 @@ func (f *connFactory) NewConn() (Connection, <-chan zk.Event, error) {
 
 // Client wraps utils to communicate with ZK
 type Client struct {
-	logger *zap.Logger
+	logger *slog.Logger
 	scope  tally.Scope
 
 	zkSvr          string
@@ -155,7 +155,7 @@ func WithConnFactory(connFactory ConnFactory) ClientOption {
 }
 
 // NewClient returns new ZK client
-func NewClient(logger *zap.Logger, scope tally.Scope, options ...ClientOption) *Client {
+func NewClient(logger *slog.Logger, scope tally.Scope, options ...ClientOption) *Client {
 	mu := &sync.Mutex{}
 	c := &Client{
 		cond:              sync.NewCond(mu),
@@ -166,7 +166,7 @@ func NewClient(logger *zap.Logger, scope tally.Scope, options ...ClientOption) *
 	for _, option := range options {
 		option(c)
 	}
-	c.logger = logger.With(zap.String("zkSvr", c.zkSvr))
+	c.logger = logger.With(slog.String("zkSvr", c.zkSvr))
 	c.scope = scope.SubScope("helix.zk").Tagged(map[string]string{"zkSvr": c.zkSvr})
 	if c.connFactory == nil {
 		zkServers := strings.Split(strings.TrimSpace(c.zkSvr), ",")
@@ -219,7 +219,7 @@ func (c *Client) processEvents(eventCh <-chan zk.Event) {
 			}
 			switch ev.Type {
 			case zk.EventSession:
-				c.logger.Info("receive EventSession", zap.Any("state", ev.State))
+				c.logger.Info("receive EventSession", slog.Any("state", ev.State))
 				c.cond.Broadcast()
 				c.processSessionEvents(ev)
 			case zk.EventNotWatching:
@@ -408,15 +408,17 @@ func (c *Client) Delete(path string) error {
 // Example:
 //
 // mapFields":{
-// "partition_1":{
-//   "CURRENT_STATE":"OFFLINE",
-//   "INFO":""
-// }
+//
+//	"partition_1":{
+//	  "CURRENT_STATE":"OFFLINE",
+//	  "INFO":""
+//	}
 //
 // To set the CURRENT_STATE to ONLINE, use
 // UpdateMapField(
-//     "/CLUSTER/INSTANCES/{instance}/CURRENT_STATE/{sessionID}/{db}",
-//     "partition_1", "CURRENT_STATE", "ONLINE")
+//
+//	"/CLUSTER/INSTANCES/{instance}/CURRENT_STATE/{sessionID}/{db}",
+//	"partition_1", "CURRENT_STATE", "ONLINE")
 func (c *Client) UpdateMapField(path string, key string, property string, value string) error {
 	data, stat, err := c.Get(path)
 	if err != nil {

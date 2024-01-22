@@ -1,0 +1,14 @@
+github.com/davecgh/go-spew v1.0.1-0.20161028175848-04cdfd42973b h1:G+M1PNsE5dtyVzld3c5v1NFxa9lZLKPSnEehCe2FVEI=
+github.com/davecgh/go-spew v1.0.1-0.20161028175848-04cdfd42973b/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a h1:yDWHCSQ40h88yih2JAcL6Ls/kVkSE8GFACTGVnMPruw=
+github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a/go.mod h1:7Ga40egUymuWXxAe151lTNnCv97MddSOVsjpPPkityA=
+github.com/pkg/errors v0.8.1-0.20171210022416-8842a6e0cc59 h1:TgAB+Afm7+oqW5tullUZ0WIdfpcJlDIr6ViUcdUdf/8=
+github.com/pkg/errors v0.8.1-0.20171210022416-8842a6e0cc59/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
+github.com/pmezard/go-difflib v0.0.0-20151028094244-d8ed2627bdf0 h1:GD+A8+e+wFkqje55/2fOVnZPkoDIu1VooBWfNrnY8Uo=
+github.com/pmezard/go-difflib v0.0.0-20151028094244-d8ed2627bdf0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/samuel/go-zookeeper v0.0.0-20171117190445-471cd4e61d7a h1:EYL2xz/Zdo0hyqdZMXR4lmT2O11jDLTPCEqIe/FR6W4=
+github.com/samuel/go-zookeeper v0.0.0-20171117190445-471cd4e61d7a/go.mod h1:gi+0XIa01GRL2eRQVjQkKGqKF3SF9vZR/HnPullcV2E=
+github.com/stretchr/testify v1.1.5-0.20171018052257-2aa2c176b9da h1:glZmY4mCDpnJuNJ4z+wbu5y2Qir8LgfkvYgv5as+LBY=
+github.com/stretchr/testify v1.1.5-0.20171018052257-2aa2c176b9da/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
+github.com/uber-go/tally v3.3.1+incompatible h1:lUg15NoecXwB6yeMgl25ruLKxJqs2NCsrTaqC6suzlQ=
+github.com/uber-go/tally v3.3.1+incompatible/go.mod h1:YDTIBxdXyOU/sCWilKB4bgyufu1cEi0jdVnRdxvjnmU=

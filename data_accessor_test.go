@@ -143,7 +143,7 @@ func (s *DataAccessorTestSuite) TestInstanceConfig() {
 	config := model.NewInstanceConfig(testInstanceName)
 	err := accessor.createInstanceConfig(path, config)
 	s.NoError(err)
-	config, err = accessor.InstanceConfig(path)
+	config, _ = accessor.InstanceConfig(path)
 	s.False(config.GetEnabled())
 }
 
